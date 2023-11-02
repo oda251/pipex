@@ -1,51 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_open_close.c                                    :+:      :+:    :+:   */
+/*   ft_close_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:24:33 by yoda              #+#    #+#             */
-/*   Updated: 2023/10/31 05:35:15 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/02 03:17:25 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	ft_open(char *file, int flag, t_list **fd_lst)
+void	ft_close(int *fd)
 {
-	int	fd;
+	if (*fd == -1)
+		return ;
+	close(*fd);
+	*fd = -1;
+}
 
-	fd = open(file, flag);
-	if (fd == -1)
-		error_exit(fd_lst);
-	ft_lstadd_back(fd_lst, ft_lstnew(fd));
+void	ft_close_all(int *fd_lst)
+{
+	int	i;
+
 	if (!fd_lst)
-		error_exit(fd_lst);
-	return (fd);
+		return ;
+	i = 0;
+	while (i < 2)
+	{
+		ft_close(fd_lst[i]);
+		i++;
+	}
 }
 
-void	ft_close(int fd, t_list **fd_lst)
+static void	free_args_sub(char **arg)
 {
-	if (close(fd) == -1)
-		error_exit(fd_lst);
-	ft_lstdelone(fd_lst, fd);
+	int	i;
+
+	i = 0;
+	while (arg[i])
+	{
+		free(arg[i]);
+		i++;
+	}
+	free(arg);
+	return ;
 }
 
-int	ft_dup(char *file, t_list **fd_lst)
+void	free_args(char ***args)
 {
-	int	fd;
+	int	i;
 
-	fd = dup(file);
-	if (fd == -1)
-		error_exit(fd_lst);
-	ft_lstadd_back(fd_lst, ft_lstnew(fd));
-	if (!fd_lst)
-		error_exit(fd_lst);
-	return (fd);
-}
-
-void	ft_close_all(t_list **fd_lst)
-{
-	ft_lstclear(fd_lst, close);
+	i = 0;
+	while (args[i])
+	{
+		free_args_sub(args[i]);
+		i++;
+	}
+	free(args);
+	return ;
 }

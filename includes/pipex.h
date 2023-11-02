@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 20:39:49 by yoda              #+#    #+#             */
-/*   Updated: 2023/10/31 05:37:34 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/02 06:30:31 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,20 @@
 # include <string.h>
 # include <errno.h>
 # include "libft.h"
+# define NONE -1
+# define TRUE 1
+# define FALSE 0
+# define SUCCESS "Success"
 
-void	error_exit(t_list **fd_lst);
-int		ft_open(char *file, int flag, t_list **fd_lst);
-int		ft_dup(char *file, t_list **fd_lst);
-void	ft_close(int fd, t_list **fd_lst);
-void	ft_close_all(t_list **fd_lst);
+char	***trans_args(int c, char **v, char *str);
+char	*read_till_limiter(int fd, char *limiter);
+void	perror_exit(int *fd_lst, char *arg, int free_flag);
+void	perror_free_args_exit(int *fd_lst, char ***args);
+void	invalid_usage(void);
+void	cmd_not_found(char *cmd);
+void	ft_close(int *fd);
+void	ft_close_all(int *fd_lst);
+void	free_args(char ***args);
+int		ft_dup_fds(int *fd_lst, int stdin, int stdout);
 
 #endif
