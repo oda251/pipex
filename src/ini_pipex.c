@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ini_pipex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 21:36:02 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 20:25:15 by yoda             ###   ########.fr       */
+/*   Created: 2023/11/03 20:13:13 by yoda              #+#    #+#             */
+/*   Updated: 2023/11/03 20:13:24 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+void	ini_pipex(t_pipex *p, char **envp)
 {
-	size_t			i;
-	unsigned char	*dest;
-
-	dest = (unsigned char *) b;
-	i = -1;
-	while (++i < len)
-		*(dest + i) = (unsigned char) c;
-	return (dest);
+	p->args = NULL;
+	p->arg_size = 0;
+	p->cmd_size = 0;
+	p->envp = envp;
+	p->infile = NONE;
+	p->outfile = NONE;
+	p->here_doc = FALSE;
 }
 
-void	*ft_memset_int(int *b, int n, size_t len)
+void	has_here_doc(int *c, char ***v, t_pipex *p)
 {
-	size_t	i;
-
-	i = -1;
-	while (++i < len)
-		*(b + i) = n;
-	return (b);
+	if (ft_strcmp((*v)[0], "here_doc") == 0)
+	{
+		p->here_doc = TRUE;
+		(*c)--;
+		(*v)++;
+	}
+	else
+		p->here_doc = FALSE;
 }

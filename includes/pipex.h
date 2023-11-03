@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 20:39:49 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 16:22:49 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 21:25:59 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,26 @@ typedef struct s_pipex
 {
 	int		here_doc;
 	char	***args;
-	int		arg_count;
+	int		arg_size;
+	int		cmd_size;
 	char	**envp;
 	int		infile;
 	int		outfile;
+	pid_t	*pid;
+	int		*fd;
 }	t_pipex;
+void	ini_pipex(t_pipex *p, char **envp);
+void	has_here_doc(int *c, char ***v, t_pipex *p);
 int		arg_check_files(int c, char **v, int here_doc);
 void	arg_check_cmds(char **envp, t_pipex p);
 char	***trans_args(int c, char **v);
-void	pipex(t_pipex p, int fd, int count);
+void	pipex(t_pipex *p);
 void	ft_perror(char *arg);
 void	perror_exit(t_pipex *p, char *arg, int free_flag);
 void	error_invalid_usage(void);
 void	error_cmd_not_found(char *cmd);
 void	ft_close(int *fd);
-void	ft_close_all(int *fd_lst);
-void	free_args(char ***args);
 int		ft_dup_fds(int *fd_lst, int stdin, int stdout);
-void	free_char_double_p(char **arg);
 void	free_pipex(t_pipex *p);
 
 #endif

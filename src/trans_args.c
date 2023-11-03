@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trans_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 04:20:05 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 09:58:39 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 20:49:18 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	***trans_args(int c, char **v)
 		dest[i] = ft_split(v[i], " \n\t\v\f\r");
 		if (!dest[i])
 		{
-			free_args(dest);
+			ft_free_char_triple_p(dest);
 			return (NULL);
 		}
 		i++;

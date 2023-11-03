@@ -1,6 +1,7 @@
 NAME = pipex
 SRCS = main.c \
 	pipex.c \
+	ini_pipex.c \
 	trans_args.c \
 	ft_dup_fds.c \
 	ft_close_free.c \

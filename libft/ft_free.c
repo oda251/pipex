@@ -1,35 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 21:36:02 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 20:25:15 by yoda             ###   ########.fr       */
+/*   Created: 2023/11/03 20:00:39 by yoda              #+#    #+#             */
+/*   Updated: 2023/11/03 20:17:42 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+void	*ft_free(void *p)
 {
-	size_t			i;
-	unsigned char	*dest;
-
-	dest = (unsigned char *) b;
-	i = -1;
-	while (++i < len)
-		*(dest + i) = (unsigned char) c;
-	return (dest);
+	if (p)
+		free(p);
+	return (NULL);
 }
 
-void	*ft_memset_int(int *b, int n, size_t len)
+void	*ft_free_char_double_p(char **arg)
 {
-	size_t	i;
+	int	i;
 
-	i = -1;
-	while (++i < len)
-		*(b + i) = n;
-	return (b);
+	i = 0;
+	while (arg[i])
+	{
+		free(arg[i]);
+		i++;
+	}
+	free(arg);
+	return (NULL);
+}
+
+void	*ft_free_char_triple_p(char ***args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		ft_free_char_double_p(args[i]);
+		i++;
+	}
+	free(args);
+	return (NULL);
 }

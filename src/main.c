@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:07:19 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 16:50:15 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 21:25:13 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ini_pipex(t_pipex *p, char **envp);
-void	has_here_doc(int *c, char ***v, t_pipex *p);
 int		open_files(int c, char **v, t_pipex *p);
 void	handle_heredoc(t_pipex *p, char *limiter);
 
@@ -30,40 +28,18 @@ int	main(int c, char **v, char **envp)
 	if (c < 4)
 		error_invalid_usage();
 	arg_check_files(c, v, p.here_doc);
-	p.args = trans_args(c, v);
+	p.args = trans_args(c - 2, v + 1);
 	if (!p.args)
 		perror_exit(NULL, NULL, 0);
 	arg_check_cmds(envp, p);
 	if (!open_files(c, v, &p))
 	{
-		free_args(p.args);
+		ft_free_char_triple_p(p.args);
 		perror_exit(NULL, NULL, 0);
 	}
-	pipex(p, p.outfile, 0);
+	pipex(&p);
 	free_pipex(&p);
 	return (0);
-}
-
-void	ini_pipex(t_pipex *p, char **envp)
-{
-	p->args = NULL;
-	p->arg_count = 0;
-	p->envp = envp;
-	p->infile = NONE;
-	p->outfile = NONE;
-	p->here_doc = FALSE;
-}
-
-void	has_here_doc(int *c, char ***v, t_pipex *p)
-{
-	if (ft_strcmp((*v)[0], "here_doc") == 0)
-	{
-		p->here_doc = TRUE;
-		(*c)--;
-		(*v)++;
-	}
-	else
-		p->here_doc = FALSE;
 }
 
 int	open_files(int c, char **v, t_pipex *p)

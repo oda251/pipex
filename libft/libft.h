@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:55:50 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 13:00:02 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 20:23:58 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,9 @@ void	ft_putstr(char *str);
 char	*ft_itoa_sign_sep(int n, char **sign);
 size_t	ft_strcpy(char *dst, const char *src);
 char	*get_next_line(int fd);
+void	*ft_free(void *p);
+void	*ft_free_char_double_p(char **arg);
+void	*ft_free_char_triple_p(char ***args);
+void	*ft_memset_int(int *b, int n, size_t len);
 
 #endif

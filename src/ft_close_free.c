@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_close_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:24:33 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 14:46:07 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 21:23:55 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,46 +20,15 @@ void	ft_close(int *fd)
 	*fd = -1;
 }
 
-void	ft_close_all(int *fd_lst)
-{
-	int	i;
-
-	if (!fd_lst)
-		return ;
-	i = 0;
-	while (i < 2)
-	{
-		ft_close(&(fd_lst[i]));
-		i++;
-	}
-}
-
-void	free_char_double_p(char **arg)
+static void	*px_close_all(t_pipex *p)
 {
 	int	i;
 
 	i = 0;
-	while (arg[i])
-	{
-		free(arg[i]);
-		i++;
-	}
-	free(arg);
-	return ;
-}
-
-void	free_args(char ***args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-	{
-		free_char_double_p(args[i]);
-		i++;
-	}
-	free(args);
-	return ;
+	while (i < (p->cmd_size - 1) * 2)
+		ft_close(&(p->fd[i]));
+	p->fd = ft_free(p->fd);
+	return (NULL);
 }
 
 void	free_pipex(t_pipex *p)
@@ -67,7 +36,7 @@ void	free_pipex(t_pipex *p)
 	if (!p)
 		return ;
 	if (p->args)
-		free_args(p->args);
+		ft_free_char_triple_p(p->args);
 	ft_close(&(p->infile));
 	ft_close(&(p->outfile));
 	if (p->here_doc)
@@ -75,5 +44,7 @@ void	free_pipex(t_pipex *p)
 		if (access("./tmp", F_OK) == 0)
 			unlink("./tmp");
 	}
+	px_close_all(p);
+	ft_free(p->pid);
 	return ;
 }

@@ -51,7 +51,8 @@ SRCS = ft_atoi.c \
 	ft_max.c \
 	ft_strcmp.c \
 	get_next_line.c \
-	get_next_line_utils.c
+	get_next_line_utils.c \
+	ft_free.c
 OBJS = $(SRCS:.c=.o)
 CC = cc
 CFRAGS = -Wall -Wextra -Werror

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_check_cmds.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:23:37 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 16:12:25 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 21:23:25 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,19 @@ void	arg_check_cmds(char **envp, t_pipex p)
 	paths = ft_split(get_path(envp), ":");
 	if (!paths)
 		perror_exit(NULL, NULL, 0);
-	i = 1;
-	while (p.args[i + 1])
+	i = 0;
+	while (p.args[i])
 	{
 		if (!check_existance(paths, &(p.args[i][0])))
 		{
 			error_cmd_not_found(p.args[i][0]);
-			free_args(p.args);
-			free_char_double_p(paths);
+			ft_free_char_triple_p(p.args);
+			ft_free_char_double_p(paths);
 			exit(EXIT_FAILURE);
 		}
 		i++;
 	}
-	p.arg_count = i + 1;
-	free_char_double_p(paths);
+	p.arg_size = i + 1;
+	p.cmd_size = i - 1;
+	ft_free_char_double_p(paths);
 }
