@@ -19,7 +19,7 @@ int	ft_tolower(int c)
 	return (c);
 }
 
-void	ft_strtolower(char *str)
+char	*ft_strtolower(char *str)
 {
 	int	i;
 
@@ -29,4 +29,5 @@ void	ft_strtolower(char *str)
 		str[i] = ft_tolower(str[i]);
 		i++;
 	}
+	return (str);
 }

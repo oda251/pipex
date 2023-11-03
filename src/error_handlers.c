@@ -6,44 +6,52 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:16:12 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/02 02:05:21 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 14:43:00 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	perror_exit(int *fd_lst, char *arg, int free_flag)
+void	ft_perror(char *arg)
 {
-	ft_close_all(fd_lst);
+	char	*msg;
+
 	ft_puterror("pipex: ");
-	ft_puterror(ft_strtolower(strerror(errno)));
-	if (arg)
+	msg = ft_strdup(strerror(errno));
+	if (!msg)
+		ft_puterror("failed to allocate memory");
+	else
 	{
-		ft_puterror(": ");
-		ft_puterror(arg);
+		msg = ft_strtolower(msg);
+		ft_puterror(msg);
+		free(msg);
+		if (arg)
+		{
+			ft_puterror(": ");
+			ft_puterror(arg);
+		}
 	}
 	ft_puterror("\n");
+}
+
+void	perror_exit(t_pipex *p, char *arg, int free_flag)
+{
+	ft_perror(arg);
 	if (free_flag)
 		free(arg);
+	free_pipex(p);
 	exit(EXIT_FAILURE);
 }
 
-void	perror_free_args_exit(int *fd_lst, char ***args)
+void	error_invalid_usage(void)
 {
-	free_args(args);
-	perror_exit(fd_lst, NULL, 0);
-}
-
-void	invalid_usage(void)
-{
-	ft_puterror("pipex: invalid argument\n");
+	ft_puterror("pipex: too few argument\n");
 	exit(EXIT_FAILURE);
 }
 
-void	cmd_not_found(char *cmd)
+void	error_cmd_not_found(char *cmd)
 {
 	ft_puterror("pipex: command not found: ");
 	ft_puterror(cmd);
 	ft_puterror("\n");
-	exit(EXIT_FAILURE);
 }

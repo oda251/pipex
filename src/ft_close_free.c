@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:24:33 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/02 03:17:25 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 14:46:07 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_close(int *fd)
 {
-	if (*fd == -1)
+	if (*fd > 2)
 		return ;
 	close(*fd);
 	*fd = -1;
@@ -29,12 +29,12 @@ void	ft_close_all(int *fd_lst)
 	i = 0;
 	while (i < 2)
 	{
-		ft_close(fd_lst[i]);
+		ft_close(&(fd_lst[i]));
 		i++;
 	}
 }
 
-static void	free_args_sub(char **arg)
+void	free_char_double_p(char **arg)
 {
 	int	i;
 
@@ -55,9 +55,25 @@ void	free_args(char ***args)
 	i = 0;
 	while (args[i])
 	{
-		free_args_sub(args[i]);
+		free_char_double_p(args[i]);
 		i++;
 	}
 	free(args);
+	return ;
+}
+
+void	free_pipex(t_pipex *p)
+{
+	if (!p)
+		return ;
+	if (p->args)
+		free_args(p->args);
+	ft_close(&(p->infile));
+	ft_close(&(p->outfile));
+	if (p->here_doc)
+	{
+		if (access("./tmp", F_OK) == 0)
+			unlink("./tmp");
+	}
 	return ;
 }

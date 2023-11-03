@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 04:50:58 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/02 05:14:25 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 10:03:37 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ int	ft_dup_fds(int *fd, int stdin, int stdout)
 	fd[1] = dup(stdout);
 	if (fd[1] == -1)
 	{
-		ft_close(fd[0]);
+		ft_close(&(fd[0]));
 		return (0);
 	}
 	return (1);
 }
 
-ft_dup2_fds(int *fd, int *stdfd)
+int	ft_dup2_fds(int *fd, int *stdfd)
 {
 	fd[0] = dup2(stdfd[0], 0);
 	if (fd[0] == -1)
@@ -34,7 +34,7 @@ ft_dup2_fds(int *fd, int *stdfd)
 	fd[1] = dup2(stdfd[1], 1);
 	if (fd[1] == -1)
 	{
-		ft_close(fd[0]);
+		ft_close(&(fd[0]));
 		return (0);
 	}
 	return (1);

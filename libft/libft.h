@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:55:50 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/01 22:51:12 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 13:00:02 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 void	ft_puterror(char *str);
 int		ft_strcmp(char *s1, char *s2);
-void	ft_strtolower(char *str);
+char	*ft_strtolower(char *str);
 typedef struct s_list
 {
 	void			*content;
@@ -82,5 +82,6 @@ int		ft_atoi_only_num(const char *str);
 void	ft_putstr(char *str);
 char	*ft_itoa_sign_sep(int n, char **sign);
 size_t	ft_strcpy(char *dst, const char *src);
+char	*get_next_line(int fd);
 
 #endif

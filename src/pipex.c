@@ -6,86 +6,55 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 06:34:58 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/02 08:16:07 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/03 16:55:17 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	child(int *fd, int c, char ***args, int here_doc);
+void	child(int fd, int *pipefd, t_pipex p, int count);
 
-void	pipex_ini(int c, char ***args, char *str, int here_doc)
+void	pipex(t_pipex p, int fd, int count)
 {
-	int		fd[4];;
-	int		pid;
-	int		status;
+	int	pid;
+	int	pipefd[2];
 
-	if (pipe(fd) == -1 || !ft_dup_fds(fd + 2, 0, 1))
-		perror_free_args_exit(NULL, args);
+	if (pipe(pipefd) == -1)
+		perror_exit(&p, NULL, 0);
+	if (count < p.arg_count - 3)
+		pipex(p, pipefd[1], count + 1);
 	pid = fork();
-	if (pid < 0)
-		perror_free_args_exit(fd, args);
-	else if (pid == 0)
-		child(fd, c, args, here_doc);
+	if (pid == -1)
+		perror_exit(&p, NULL, 0);
+	if (pid == 0)
+		child(fd, pipefd, p, count);
 	else
 	{
-		waitpid(pid, &status, WUNTRACED);
-		if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-			write(fd[1], str, ft_strlen(str));
-		free(str);
+		waitpid(pid, NULL, 0);
+		ft_close(&(pipefd[0]));
+		ft_close(&(pipefd[1]));
 	}
-	ft_close_all(fd);
-	ft_close_all(fd + 2);
-	free_args(args);
 }
 
-void	pipex_rec(int c, char ***args, int *stdfd, int here_doc)
+void	child(int fd, int *pipefd, t_pipex p, int count)
 {
-	int		fd[2];
-	int		pid;
-	int		status;
+	int	tmp;
 
-	if (c == 2)
-		return (pipex_fin(args, stdfd, here_doc));
-	if (pipe(fd) == -1)
-		perror_free_args_exit(fd, args);
-	pid = fork();
-	if (pid < 0)
-		perror_free_args_exit(fd, args);
-	else if (pid == 0)
-		child(fd, c, args, here_doc);
+	if (count == p.arg_count - 3)
+		tmp = dup2(p.infile, STDIN_FILENO);
 	else
-	{
-		waitpid(pid, &status, WUNTRACED);
-		if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-			pipex_rec(c - 1, args + 1, fd, stdfd);
-	}
-	ft_close_all(fd);
-	return ;
-}
-
-void	pipex_fin(char ***args, int *stdfd, int here_doc)
-{
-	int		fd;
-	int		fd2;
-
-	if (!pipe(fd))
-		perror_exit(NULL, NULL, 0);
-	if (here_doc)
-		fd = open(args[1][0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else
-		fd = open(args[1][0], O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1)
-		perror_exit(NULL, args[1][0], 0);
-	dup2(fd, 1);
-	execve(args[0][0], args[0], NULL);
-	close(fd);
-}
-
-void	child(int *fd, int c, char ***args, int here_doc)
-{
-	ft_close_all(fd);
-	if (!ft_dup2_fds(fd, fd + 2))
-		perror_free_args_exit(fd, args);
-	pipex_rec(c - 1, args + 1, fd + 2, here_doc);
+		tmp = dup2(pipefd[0], STDIN_FILENO);
+	if (tmp == -1)
+		perror_exit(&p, NULL, 0);
+	tmp = dup2(fd, STDOUT_FILENO);
+	if (tmp == -1)
+		perror_exit(&p, NULL, 0);
+	ft_close(&(pipefd[0]));
+	ft_close(&(pipefd[1]));
+	// execve(p.args[p.arg_count - count - 2][0],
+	// 	p.args[p.arg_count - count - 2], p.envp);
+	char buf[100];
+	int r = read(STDIN_FILENO, buf, 100);
+	buf[r] = '\0';
+	printf("%d: %s\n", count, buf);
 }
