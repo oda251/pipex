@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:24:33 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/04 03:38:56 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/04 19:49:03 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,6 @@ void	ft_close(int *fd)
 	*fd = -1;
 }
 
-void	*px_close_all(t_pipex *p)
-{
-	int	i;
-
-	ft_close(&(p->infile));
-	ft_close(&(p->outfile));
-	i = -1;
-	while (++i < (p->cmd_size - 1) * 2)
-		ft_close(&(p->fd[i]));
-	p->fd = ft_free(p->fd);
-	return (NULL);
-}
-
 void	free_pipex(t_pipex *p)
 {
 	if (!p)
@@ -44,7 +31,7 @@ void	free_pipex(t_pipex *p)
 		if (access("./tmp", F_OK) == 0)
 			unlink("./tmp");
 	}
-	px_close_all(p);
-	ft_free(p->pid);
+	ft_close(&(p->infile));
+	ft_close(&(p->outfile));
 	return ;
 }

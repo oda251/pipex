@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:07:19 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/04 04:46:31 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/04 19:36:23 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ int	main(int c, char **v, char **envp)
 		error_invalid_usage();
 	arg_check_files(c, v, &p);
 	p.args = trans_args(c - 2, v + 1);
-	if (!p.args)
-		perror_exit(&p, NULL, 0);
 	arg_check_cmds(&p);
-	pipex(&p);
-	free_pipex(&p);
+	pipex(p, p.infile, 0);
 	return (0);
 }

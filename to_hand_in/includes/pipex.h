@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 20:39:49 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/04 04:33:39 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/04 19:49:18 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,18 @@ typedef struct s_pipex
 	char	**envp;
 	int		infile;
 	int		outfile;
-	pid_t	*pid;
-	int		*fd;
 }	t_pipex;
 void	ini_pipex(t_pipex *p, char **envp);
 void	has_here_doc(int *c, char ***v, t_pipex *p);
 int		arg_check_files(int c, char **v, t_pipex *p);
 void	arg_check_cmds(t_pipex *p);
 char	***trans_args(int c, char **v);
-void	pipex(t_pipex *p);
+void	pipex(t_pipex p, int fd, int count);
 void	ft_perror(char *arg);
 void	perror_exit(t_pipex *p, char *arg, int free_flag);
 void	error_invalid_usage(void);
 void	error_cmd_not_found(char *cmd, t_pipex *p);
 void	ft_close(int *fd);
 void	free_pipex(t_pipex *p);
-void	*px_close_all(t_pipex *p);
 
 #endif

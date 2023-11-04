@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 22:04:33 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/03 22:24:33 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/04 18:27:54 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	parent(int fd[2])
 		exit(1);
 	if (close(fd[0]))
 		exit(1);
-	argv[0] = "cat";
-	argv[1] = "-e";
+	argv[0] = "wc";
+	argv[1] = NULL;
 	argv[2] = NULL;
-	if (execve("/bin/cat", argv, NULL) == -1)
+	if (execve("/bin/wc", argv, NULL) == -1)
 		exit(1);
 }
 

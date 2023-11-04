@@ -27,6 +27,8 @@ $(NAME): $(LIBFT) $(SRC)
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
+bonus: all
+
 clean:
 	make clean -C $(LIBFT_DIR)
 
