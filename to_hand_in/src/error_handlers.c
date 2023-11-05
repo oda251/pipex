@@ -6,39 +6,42 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:16:12 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/04 04:52:21 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/06 01:04:51 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_perror(char *arg)
+void	ft_perror(char *arg, bool former_flag)
 {
 	char	*msg;
 
-	ft_puterror("pipex: ");
 	msg = ft_strdup(strerror(errno));
 	if (!msg)
-		ft_puterror("failed to allocate memory");
-	else
 	{
-		msg = ft_strtolower(msg);
-		ft_puterror(msg);
-		free(msg);
-		if (arg)
-		{
-			ft_puterror(": ");
-			ft_puterror(arg);
-		}
+		perror("pipex");
+		exit(EXIT_FAILURE);
+	}
+	msg = ft_strtolower(msg);
+	ft_puterror("pipex: ");
+	if (arg != NULL && former_flag == true)
+	{
+		ft_puterror(arg);
+		ft_puterror(": ");
+	}
+	ft_puterror(msg);
+	free(msg);
+	if (arg != NULL && former_flag == false)
+	{
+		ft_puterror(": ");
+		ft_puterror(arg);
 	}
 	ft_puterror("\n");
 }
 
-void	perror_exit(t_pipex *p, char *arg, int free_flag)
+void	perror_exit(t_pipex *p, char *arg, bool former_flag)
 {
-	ft_perror(arg);
-	if (free_flag)
-		free(arg);
+	ft_perror(arg, former_flag);
 	free_pipex(p);
 	exit(EXIT_FAILURE);
 }

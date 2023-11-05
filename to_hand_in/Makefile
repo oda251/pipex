@@ -1,11 +1,11 @@
 NAME = pipex
 SRCS = main.c \
-	pipex.c \
 	init_pipex.c \
+	handle_heredoc.c \
+	execute_cmds.c \
+	parse_cmd.c \
 	ft_close_free.c \
-	error_handlers.c \
-	arg_check_cmds.c \
-	arg_check_files.c
+	error_handlers.c
 SRC_DIR = ./src/
 BONUS_DIR = ./bonus/
 BONUS_SRCS = $(addsuffix _bonus.c, $(basename $(SRCS)))

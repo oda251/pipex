@@ -3,31 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   init_pipex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 20:13:13 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/05 22:47:50 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/06 04:14:46 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 bool	has_here_doc(char *arg);
-void	create_pipes(t_pipex *p);
+char	**get_paths(char **envp);
 
 void	init_pipex(t_pipex *p, int argc, char **argv, char **envp)
 {
-	if (argc <= 5)
-		error_invalid_usage();
 	p->heredoc_flag = has_here_doc(argv[0]);
+	if (argc < 4 + p->heredoc_flag)
+		error_invalid_usage();
 	p->cmd_size = argc - p->heredoc_flag - 2;
 	p->argv = argv + p->heredoc_flag;
-	p->argv = envp;
+	p->envp = envp;
+	p->paths = get_paths(envp);
 	p->pid = malloc(sizeof(int) * p->cmd_size);
 	if (p->pid == NULL)
-		/* error */;
+	{
+		ft_free_char_double_p(p->paths);
+		perror_exit(NULL, NULL, 0);
+	}
 	ft_memset_int(p->pid, -1, p->cmd_size);
-	create_pipes(p);
+	p->tmp_path = prepare_tmpfile(p);
 }
 
 bool	has_here_doc(char *arg)
@@ -38,48 +42,41 @@ bool	has_here_doc(char *arg)
 		return (false);
 }
 
-void	create_pipes(t_pipex *p)
+static char	**process_paths(char *env_path)
 {
-	int	i;
-
-	p->pipe = malloc(sizeof(int) * (p->cmd_size - 1) * 2);
-	if (p->pipe == NULL)
-	{
-		free(p->pid);
-		/* error */;
-	}
-	i = 0;
-	while (i < p->cmd_size - 1)
-	{
-		if (pipe(p->pipe + i) == -1)
-		{
-			while (--i >= 0)
-				ft_close(&(p->pipe[i]));
-		}
-		i += 2;
-	}
-	ft_memset_int(p->pipe, -1, (p->cmd_size - 1) * 2);
-}
-
-char	***trans_args(int c, char **v)
-{
-	char	***dest;
+	char	**paths;
+	char	*tmp;
 	int		i;
 
-	dest = (char ***)malloc(sizeof(char **) * (c + 1));
-	if (!dest)
+	paths = ft_split(env_path, ":");
+	if (!paths)
 		perror_exit(NULL, NULL, 0);
-	ft_bzero(dest, sizeof(char **) * (c + 1));
 	i = 0;
-	while (i < c)
+	while (paths[i])
 	{
-		dest[i] = ft_split(v[i], " \n\t\v\f\r");
-		if (!dest[i])
+		tmp = ft_strjoin(paths[i], "/");
+		if (!tmp)
 		{
-			ft_free_char_triple_p(dest);
+			ft_free_char_double_p(paths);
 			perror_exit(NULL, NULL, 0);
 		}
+		free(paths[i]);
+		paths[i] = tmp;
 		i++;
 	}
-	return (dest);
+	return (paths);
+}
+
+char	**get_paths(char **envp)
+{
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (process_paths(envp[i] + 5));
+		i++;
+	}
+	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 20:39:49 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/05 22:23:08 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/06 04:09:46 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@
 # define NONE -1
 # define SUCCESS "Success"
 # define SPACE " \n\t\v\f\r"
+# define TMP_PATH "/tmp/pipex_tmp"
 
 typedef struct s_cmd
 {
 	char	*row_cmd;
 	char	**argv;
-	char	in_fd;
-	char	out_fd;
 }	t_cmd;
 typedef struct s_pipex
 {
@@ -39,12 +38,15 @@ typedef struct s_pipex
 	char	**argv;
 	char	**envp;
 	pid_t	*pid;
-	int		*pipe;
+	char	**paths;
+	char	*tmp_path;
 }	t_pipex;
-void	ini_pipex(t_pipex *p, char **envp);
-void	pipex(t_pipex p, int fd, int count);
-void	ft_perror(char *arg);
-void	perror_exit(t_pipex *p, char *arg, int free_flag);
+void	init_pipex(t_pipex *p, int argc, char **argv, char **envp);
+char	*prepare_tmpfile(t_pipex *p);
+void	execute_cmds(t_pipex p);
+t_cmd	parse_cmd(t_pipex *p, int index);
+void	ft_perror(char *arg, bool former_flag);
+void	perror_exit(t_pipex *p, char *arg, bool former_flag);
 void	error_invalid_usage(void);
 void	error_cmd_not_found(char *cmd, t_pipex *p);
 void	ft_close(int *fd);
