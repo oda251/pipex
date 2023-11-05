@@ -1,7 +1,7 @@
 NAME = pipex
 SRCS = main.c \
 	pipex.c \
-	ini_pipex.c \
+	init_pipex.c \
 	ft_close_free.c \
 	error_handlers.c \
 	arg_check_cmds.c \

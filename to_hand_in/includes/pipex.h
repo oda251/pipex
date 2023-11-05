@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 20:39:49 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/04 19:49:18 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/05 22:23:08 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,29 @@
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
+# include <stdbool.h>
 # include "libft.h"
 # define NONE -1
-# define TRUE 1
-# define FALSE 0
 # define SUCCESS "Success"
+# define SPACE " \n\t\v\f\r"
 
+typedef struct s_cmd
+{
+	char	*row_cmd;
+	char	**argv;
+	char	in_fd;
+	char	out_fd;
+}	t_cmd;
 typedef struct s_pipex
 {
-	int		here_doc;
-	char	***args;
+	bool	heredoc_flag;
 	int		cmd_size;
+	char	**argv;
 	char	**envp;
-	int		infile;
-	int		outfile;
+	pid_t	*pid;
+	int		*pipe;
 }	t_pipex;
 void	ini_pipex(t_pipex *p, char **envp);
-void	has_here_doc(int *c, char ***v, t_pipex *p);
-int		arg_check_files(int c, char **v, t_pipex *p);
-void	arg_check_cmds(t_pipex *p);
-char	***trans_args(int c, char **v);
 void	pipex(t_pipex p, int fd, int count);
 void	ft_perror(char *arg);
 void	perror_exit(t_pipex *p, char *arg, int free_flag);
