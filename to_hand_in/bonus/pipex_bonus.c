@@ -3,16 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 06:34:58 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/04 20:08:47 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/05 19:38:30 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 void	child(t_pipex p, int infd, int outfd, int count);
+
+void	pipex_sub(t_pipex p, int fd, int *pipefd, int count)
+{
+	if (count < p.cmd_size - 1)
+		child(p, fd, pipefd[1], count);
+	else
+		child(p, fd, p.outfile, count);
+}
 
 void	pipex(t_pipex p, int fd, int count)
 {
@@ -26,12 +34,7 @@ void	pipex(t_pipex p, int fd, int count)
 	if (pid < 0)
 		perror_exit(&p, NULL, 0);
 	else if (pid == 0)
-	{
-		if (count < p.cmd_size - 1)
-			child(p, fd, pipefd[1], count);
-		else
-			child(p, fd, p.outfile, count);
-	}
+		pipex_sub(p, fd, pipefd, count);
 	else
 	{
 		waitpid(pid, &status, WUNTRACED);

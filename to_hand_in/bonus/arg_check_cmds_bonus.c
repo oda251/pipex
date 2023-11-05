@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arg_check_cmds.c                                   :+:      :+:    :+:   */
+/*   arg_check_cmds_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:23:37 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/04 05:20:03 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/05 19:41:44 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,16 @@ static char	*get_path(char **envp)
 	return (NULL);
 }
 
-static int	is_path(char *cmd)
+static int	is_path(char *cmd, char **paths, t_pipex *p)
 {
 	if (ft_strchr(cmd, '/') != NULL)
-		return (TRUE);
-	return (FALSE);
+	{
+		if (access(cmd, F_OK) == 0)
+			return (1);
+		ft_free_char_double_p(paths);
+		perror_exit(p, cmd, 0);
+	}
+	return (0);
 }
 
 static void	check_existance(char **paths, char **cmd, t_pipex *p)
@@ -38,30 +43,22 @@ static void	check_existance(char **paths, char **cmd, t_pipex *p)
 	char	*tmp;
 	int		i;
 
-	if (is_path(*cmd))
+	if (is_path(*cmd, paths, p))
+		return ;
+	i = 0;
+	while (paths[i])
 	{
-		if (access(*cmd, F_OK) == 0)
-			return ;
-		ft_free_char_double_p(paths);
-		perror_exit(p, *cmd, 0);
-	}
-	else
-	{
-		i = 0;
-		while (paths[i])
+		tmp = ft_strjoin(paths[i], *cmd);
+		if (!tmp)
+			perror_exit(p, NULL, 0);
+		if (access(tmp, F_OK) == 0)
 		{
-			tmp = ft_strjoin(paths[i], *cmd);
-			if (!tmp)
-				perror_exit(p, NULL, 0);
-			if (access(tmp, F_OK) == 0)
-			{
-				free(*cmd);
-				*cmd = tmp;
-				return ;
-			}
-			free(tmp);
-			i++;
+			free(*cmd);
+			*cmd = tmp;
+			return ;
 		}
+		free(tmp);
+		i++;
 	}
 	ft_free_char_double_p(paths);
 	error_cmd_not_found(*cmd, p);
