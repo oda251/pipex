@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:16:12 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/06 01:04:51 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/09 02:29:10 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,13 @@
 
 void	ft_perror(char *arg, bool former_flag)
 {
-	char	*msg;
-
-	msg = ft_strdup(strerror(errno));
-	if (!msg)
-	{
-		perror("pipex");
-		exit(EXIT_FAILURE);
-	}
-	msg = ft_strtolower(msg);
-	ft_puterror("pipex: ");
+	ft_puterror(ERROR_HEADER);
 	if (arg != NULL && former_flag == true)
 	{
 		ft_puterror(arg);
 		ft_puterror(": ");
 	}
-	ft_puterror(msg);
-	free(msg);
+	ft_puterror(strerror(errno));
 	if (arg != NULL && former_flag == false)
 	{
 		ft_puterror(": ");
@@ -48,14 +38,15 @@ void	perror_exit(t_pipex *p, char *arg, bool former_flag)
 
 void	error_invalid_usage(void)
 {
-	ft_puterror("pipex: too few argument\n");
+	ft_puterror(ERROR_HEADER);
+	ft_puterror("too few argument\n");
 	exit(EXIT_FAILURE);
 }
 
 void	error_cmd_not_found(char *cmd, t_pipex *p)
 {
-	ft_puterror("pipex: command not found: ");
 	ft_puterror(cmd);
+	ft_puterror(": command not found");
 	ft_puterror("\n");
 	free_pipex(p);
 	exit(EXIT_FAILURE);

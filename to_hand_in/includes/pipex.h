@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 20:39:49 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/06 04:09:46 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/09 02:25:11 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdbool.h>
 # include "libft.h"
 # define NONE -1
+# define ERROR_HEADER "bash: "
 # define SUCCESS "Success"
 # define SPACE " \n\t\v\f\r"
 # define TMP_PATH "/tmp/pipex_tmp"
