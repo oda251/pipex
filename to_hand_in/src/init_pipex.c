@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_pipex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 20:13:13 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/06 04:14:46 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/11 20:06:07 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	init_pipex(t_pipex *p, int argc, char **argv, char **envp)
 	if (p->pid == NULL)
 	{
 		ft_free_char_double_p(p->paths);
-		perror_exit(NULL, NULL, 0);
+		perror_exit(NULL, "malloc", 0);
 	}
 	ft_memset_int(p->pid, -1, p->cmd_size);
 	p->tmp_path = prepare_tmpfile(p);
@@ -50,7 +50,7 @@ static char	**process_paths(char *env_path)
 
 	paths = ft_split(env_path, ":");
 	if (!paths)
-		perror_exit(NULL, NULL, 0);
+		perror_exit(NULL, "malloc", 0);
 	i = 0;
 	while (paths[i])
 	{
@@ -58,7 +58,7 @@ static char	**process_paths(char *env_path)
 		if (!tmp)
 		{
 			ft_free_char_double_p(paths);
-			perror_exit(NULL, NULL, 0);
+			perror_exit(NULL, "malloc", 0);
 		}
 		free(paths[i]);
 		paths[i] = tmp;

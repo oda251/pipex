@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 02:46:29 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/06 03:49:53 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/11 20:05:20 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ char	*prepare_tmpfile(t_pipex *p)
 	{
 		tmp = ft_itoa(i++);
 		if (!tmp)
-			perror_exit(p, NULL, 0);
+			perror_exit(p, "malloc", 0);
 		path = ft_strjoin(TMP_PATH, tmp);
 		free(tmp);
 		if (!path)
-			perror_exit(p, NULL, 0);
+			perror_exit(p, "malloc", 0);
 		if (access(path, F_OK) != 0)
 			break ;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:02:41 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/06 04:12:25 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/11 20:07:07 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_cmd	parse_cmd(t_pipex *p, int index)
 
 	cmd.argv = ft_split(p->argv[index], SPACE);
 	if (cmd.argv == NULL)
-		perror_exit(p, NULL, 0);
+		perror_exit(p, "malloc", 0);
 	cmd.row_cmd = cmd.argv[0];
 	cmd.argv[0] = get_cmd_path(p, cmd.row_cmd);
 	if (cmd.argv[0] == NULL)
@@ -42,10 +42,8 @@ int	is_path(char *row_cmd, t_pipex *p)
 {
 	if (ft_strchr(row_cmd, '/') != NULL)
 	{
-		if (access(row_cmd, F_OK) != 0)
-			error_cmd_not_found(row_cmd, p);
 		if (access(row_cmd, X_OK) != 0)
-			perror_exit(p, row_cmd, 0);
+			perror_exit(p, row_cmd, 1);
 		return (true);
 	}
 	else
