@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 01:36:15 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/11 20:00:25 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/11 22:12:02 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	execute_cmds(t_pipex p)
 	while (++i < p.cmd_size)
 	{
 		if (i != p.cmd_size - 1 && pipe(pipefd) == -1)
-			perror_exit(&p, pipe, 0);
+			perror_exit(&p, "pipe", 0);
 		else if (i == p.cmd_size - 1)
 			ft_memset_int(pipefd, -1, 2);
 		p.pid[i] = fork();

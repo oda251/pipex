@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:16:12 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/11 19:59:52 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/11 22:43:09 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,16 @@ void	perror_exit(t_pipex *p, char *arg, bool former_flag)
 void	error_invalid_usage(void)
 {
 	ft_puterror(ERROR_HEADER);
-	ft_puterror("too few argument\n");
+	ft_puterror("invalid arguments size\n");
 	exit(EXIT_FAILURE);
 }
 
-void	error_cmd_not_found(char *cmd, t_pipex *p)
+void	error_cmd_not_found(char *cmd)
 {
 	ft_puterror(ERROR_HEADER);
 	ft_puterror(cmd);
 	ft_puterror(": command not found");
 	ft_puterror("\n");
-	free_pipex(p);
+	ft_free(cmd);
 	exit(EXIT_FAILURE);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 05:07:19 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/06 03:50:20 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/11 22:21:07 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,5 @@ int	main(int argc, char **argv, char **envp)
 // __attribute__((destructor))
 // void    destructor(void)
 // {
-//     int     status;
-//     char    buf[50];
-
-//     snprintf(buf, 50, "leaks %d &> leaksout", getpid());
-//     status = system(buf);
-//     if (status)
-//     {
-//         write(2, "leak!!!\n", 8);
-//         system("cat leaksout >/dev/stderr");
-//         exit(1);
-//     }
+//     system("leaks pipex");
 // }

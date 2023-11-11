@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 20:39:49 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/09 02:25:11 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/11 22:07:26 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_cmd	parse_cmd(t_pipex *p, int index);
 void	ft_perror(char *arg, bool former_flag);
 void	perror_exit(t_pipex *p, char *arg, bool former_flag);
 void	error_invalid_usage(void);
-void	error_cmd_not_found(char *cmd, t_pipex *p);
+void	error_cmd_not_found(char *cmd);
 void	ft_close(int *fd);
 void	free_pipex(t_pipex *p);
 

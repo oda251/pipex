@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:02:41 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/11 20:07:07 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/11 22:10:42 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ int	is_path(char *row_cmd, t_pipex *p)
 static void	*m_i_a_sub(
 	t_pipex *p, char *row_cmd, bool is_exist, int error_num)
 {
+	free_pipex(p);
 	if (is_exist == false)
-		error_cmd_not_found(row_cmd, p);
+		error_cmd_not_found(row_cmd);
 	errno = error_num;
-	perror_exit(p, row_cmd, 0);
+	perror_exit(NULL, row_cmd, 0);
 	return (NULL);
 }
 

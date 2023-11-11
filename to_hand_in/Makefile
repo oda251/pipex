@@ -6,11 +6,16 @@ SRCS = main.c \
 	parse_cmd.c \
 	ft_close_free.c \
 	error_handlers.c
+BONUS_SRCS = main.c \
+	init_pipex_bonus.c \
+	handle_heredoc.c \
+	execute_cmds.c \
+	parse_cmd.c \
+	ft_close_free.c \
+	error_handlers.c
 SRC_DIR = ./src/
-BONUS_DIR = ./bonus/
-BONUS_SRCS = $(addsuffix _bonus.c, $(basename $(SRCS)))
 ifdef BONUS
-	SRC = $(addprefix $(BONUS_DIR), $(BONUS_SRCS))
+	SRC = $(addprefix $(SRC_DIR), $(BONUS_SRCS))
 else
 	SRC = $(addprefix $(SRC_DIR), $(SRCS))
 endif
