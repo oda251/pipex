@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_pipex_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 20:13:13 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/11 22:41:35 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/19 16:43:17 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ char	**get_paths(char **envp);
 
 void	init_pipex(t_pipex *p, int argc, char **argv, char **envp)
 {
-	p->heredoc_flag = 0;
-	if (argc != 4)
+	p->heredoc_flag = has_here_doc(argv[0]);
+	if (argc < 4 + p->heredoc_flag)
 		error_invalid_usage();
 	p->cmd_size = argc - p->heredoc_flag - 2;
 	p->argv = argv + p->heredoc_flag;
